@@ -50,6 +50,10 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // your answer? => mystic8null:mai
 
         // kohama mystic8:mai だと思った。文字列の結合をしていそうなのに、nullは "null" になるらしい。
+        // TODO kohama [ふぉろー] C#とかだと空文字になるので合ってて、Javaだと "null" に by jflute (2026/07/16)
+        // 画面やメール文言に null って出てきてしまう問題が発生しやすい一方で、
+        // ログで画面でも "null" って出てくるから開発時はわかりやすいという面も。
+        // 細かいですが、どっちもどっちという感じではあります。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -61,6 +65,12 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // your answer? => oneman
 
         // kohama 参照渡しじゃなくてよかった
+        // TODO kohama [ふぉろー] seaとlandが一瞬同じアドレスで同じインスタンスを指し示しますが... by jflute (2026/07/16)
+        // land = land + "'s dreams" で新たに作られた文字列を指し示すことになります。
+        // でも、seaが持つアドレスと差し示しているインスタンスは何も変わってないのでそのままということですね。
+
+        // TODO jflute 1on1にて、変数とインスタンスのお話をする予定 (2026/07/16)
+        // ↑このとぅどぅはくぼ用のとぅどぅなのでそのまま残しておいてもらえればと。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -83,6 +93,11 @@ public class Step01VariableTest extends PlainTestCase {
 
         // kohama 417じゃないのか...。いきなり何もわからない。new はインスタンスを作っていて、BigDecimal はオリジナルのクラス？
         //        sea.add(...) で自身を書き換えるというわけではなさそう。imutable？
+        // TODO kohama [ふぉろー] newはインスタンスを作っているでOKです by jflute (2026/07/16)
+        // BigDecimal は、Java標準で提供されているクラスではありますが、まあ普通のクラスと捉えてOKです。
+        // add()が何をしているのか？そこがポイントですよね。immutableというキーワード良いですね！
+
+        // TODO jflute 1on1で、immutableのお話する予定 (2026/07/16)
     }
 
     // ===================================================================================
