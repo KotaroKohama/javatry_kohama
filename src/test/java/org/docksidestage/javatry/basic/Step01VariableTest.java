@@ -50,26 +50,27 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // your answer? => mystic8null:mai
 
         // kohama mystic8:mai だと思った。文字列の結合をしていそうなのに、nullは "null" になるらしい。
-        // TODO kohama [ふぉろー] C#とかだと空文字になるので合ってて、Javaだと "null" に by jflute (2026/07/16)
+        // done kohama [ふぉろー] C#とかだと空文字になるので合ってて、Javaだと "null" に by jflute (2026/07/16)
         // 画面やメール文言に null って出てきてしまう問題が発生しやすい一方で、
         // ログで画面でも "null" って出てくるから開発時はわかりやすいという面も。
         // 細かいですが、どっちもどっちという感じではあります。
+        // #1on1: nullのネタ話、メリデメの話 (2026/07/17)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_reassigned_basic() {
-        String sea = "mystic";
-        String land = "oneman";
-        sea = land;
-        land = land + "'s dreams";
+        String sea = "mystic"; // 1丁目1番地
+        String land = "oneman"; // 2丁目2番地
+        sea = land; // seaの中に入っている紙(1丁目1番地)を、2丁目2番地に書き換えた
+        land = land + "'s dreams"; // 4丁目4番地に "oneman's dreams" ('s dreams は3丁目だけど誰からも参照されない)
         log(sea); // your answer? => oneman
 
         // kohama 参照渡しじゃなくてよかった
-        // TODO kohama [ふぉろー] seaとlandが一瞬同じアドレスで同じインスタンスを指し示しますが... by jflute (2026/07/16)
+        // done kohama [ふぉろー] seaとlandが一瞬同じアドレスで同じインスタンスを指し示しますが... by jflute (2026/07/16)
         // land = land + "'s dreams" で新たに作られた文字列を指し示すことになります。
         // でも、seaが持つアドレスと差し示しているインスタンスは何も変わってないのでそのままということですね。
 
-        // TODO jflute 1on1にて、変数とインスタンスのお話をする予定 (2026/07/16)
+        // done jflute 1on1にて、変数とインスタンスのお話をする予定 (2026/07/16)
         // ↑このとぅどぅはくぼ用のとぅどぅなのでそのまま残しておいてもらえればと。
     }
 
@@ -80,6 +81,8 @@ public class Step01VariableTest extends PlainTestCase {
         sea = land;
         land++;
         log(sea); // your answer? => 415
+
+        // #1on1: プリミティブ型は値そのものが変数に格納されるイメージ (2026/07/17)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -87,17 +90,31 @@ public class Step01VariableTest extends PlainTestCase {
         BigDecimal sea = new BigDecimal(94);
         BigDecimal land = new BigDecimal(415);
         sea = land;
-        sea = land.add(new BigDecimal(1));
-        sea.add(new BigDecimal(1));
+        sea = land.add(new BigDecimal(1)); // seaに416へのアドレス
+        sea.add(new BigDecimal(1)); // 417をnewしたけど、そのインスタンス無視
         log(sea); // your answer? => 416
 
         // kohama 417じゃないのか...。いきなり何もわからない。new はインスタンスを作っていて、BigDecimal はオリジナルのクラス？
         //        sea.add(...) で自身を書き換えるというわけではなさそう。imutable？
-        // TODO kohama [ふぉろー] newはインスタンスを作っているでOKです by jflute (2026/07/16)
+        // done kohama [ふぉろー] newはインスタンスを作っているでOKです by jflute (2026/07/16)
         // BigDecimal は、Java標準で提供されているクラスではありますが、まあ普通のクラスと捉えてOKです。
         // add()が何をしているのか？そこがポイントですよね。immutableというキーワード良いですね！
 
-        // TODO jflute 1on1で、immutableのお話する予定 (2026/07/16)
+        // done jflute 1on1で、immutableのお話する予定 (2026/07/16)
+        // #1on1: まず、Immutableなクラスかどうかの見極め方 (2026/07/17)
+        // add()のソースコードリーディングもしてみた。JavaDocも紹介。
+        // #1on1: immutableとmutable, メリデメ (2026/07/17)
+        // immutableのメリット: 書き換えられないから安全/安心
+        // immutableのデメリット: インスタンス多くなる、sea.add()のケース
+        // mutableのメリット: いちいちインスタンス作らない、書くのが簡単になりやすい
+        // mutableのデメリット: 書き換えられちゃうから不安
+        //
+        // immutableなやり方が徐々に好まれるようになってきた。
+        // どこまで徹底するかは、言語の文化、組織の文化次第。
+        //
+        // sea.add()で自分が変わらないの気持ち悪い(笑) by こはまさん
+
+        // #1on1: この業界の新しい/古いの話 (2026/07/17)
     }
 
     // ===================================================================================
