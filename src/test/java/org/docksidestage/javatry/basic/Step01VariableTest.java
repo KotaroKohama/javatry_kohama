@@ -128,19 +128,26 @@ public class Step01VariableTest extends PlainTestCase {
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_String() {
         String sea = instanceBroadway;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => null
+
+        // kohama instanceBroadway はインスタンスのアドレスが格納される変数。"String instanceBroadway" だけだとヌルポっぽい。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_int() {
         int sea = instanceDockside;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 0
+
+        // kohama primitive な型なので、変数に値が直接格納される。宣言時に何も代入していないので、中身は未定義ということになるが、まあ0になりそうだと思った。
+
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_Integer() {
         Integer sea = instanceHangar;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => null
+
+        // kohama primitive な int と違って、Integer はオブジェクト（？）なので、Stringの時と同じ挙動だと思った。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -149,7 +156,11 @@ public class Step01VariableTest extends PlainTestCase {
         instanceMagiclamp = "magician";
         helpInstanceVariableViaMethod(instanceMagiclamp);
         String sea = instanceBroadway + "|" + instanceDockside + "|" + instanceHangar + "|" + instanceMagiclamp;
-        log(sea); // your answer? => 
+        log(sea); // your answer? => bigband|1|null|magician
+
+        // kohama 整理：String は immutable だが、新しいインスタンス "bbb" を作って、そのアドレスを instanceBroadway に代入することは可能。
+        //        test関数からヘルパー関数へは、中身が "magician" のインスタンスのアドレスが渡される。そのアドレスを、ヘルパー関数が独自で宣言した instanceMagiclamp に代入。
+        //        ヘルパー側の instanceMagiclamp に新しく、 中身が "burn" のインスタンスのアドレスを代入しても、test関数には影響なし！
     }
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
@@ -169,7 +180,9 @@ public class Step01VariableTest extends PlainTestCase {
         String sea = "harbor";
         int land = 415;
         helpMethodArgumentImmutableMethodcall(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor
+
+        // kohama sea.concat() は、結合した文字列で新しいインスタンスを作ってreturnする人。
     }
 
     private void helpMethodArgumentImmutableMethodcall(String sea, int land) {
