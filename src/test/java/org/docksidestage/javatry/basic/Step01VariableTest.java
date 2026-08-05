@@ -139,7 +139,8 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // your answer? => 0
 
         // kohama primitive な型なので、変数に値が直接格納される。宣言時に何も代入していないので、中身は未定義ということになるが、まあ0になりそうだと思った。
-
+        // TODO kohama [いいね] そのとおり、コンパイルエラーになってないということは何かしらのデフォルト値が入るということですね。 by jflute (2026/08/05)
+        // 一方で、ローカル変数だと、中身が未定義で使用するとコンパイルエラーになります。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -148,6 +149,8 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // your answer? => null
 
         // kohama primitive な int と違って、Integer はオブジェクト（？）なので、Stringの時と同じ挙動だと思った。
+        // TODO kohama [ふぉろー] オブジェクトで合ってます。プリミティブ型に対してオブジェクト型と呼びます。 by jflute (2026/08/05)
+        // (違う視点の言葉で、Integerはラッパー型とも呼ばれます)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -161,6 +164,11 @@ public class Step01VariableTest extends PlainTestCase {
         // kohama 整理：String は immutable だが、新しいインスタンス "bbb" を作って、そのアドレスを instanceBroadway に代入することは可能。
         //        test関数からヘルパー関数へは、中身が "magician" のインスタンスのアドレスが渡される。そのアドレスを、ヘルパー関数が独自で宣言した instanceMagiclamp に代入。
         //        ヘルパー側の instanceMagiclamp に新しく、 中身が "burn" のインスタンスのアドレスを代入しても、test関数には影響なし！
+        // TODO kohama [いいね] アドレスの旅のイメージしっかりできてますね！ by jflute (2026/08/05)
+        // メソッド呼び出しは、変数という箱そのものが引き渡されるわけではなく、その中身が引き渡されますので、
+        // 今回たまたま同名の別の変数(別の箱)と言えます。
+
+        // TODO jflute 1on1にて、インスタンス変数を改めて深掘り (2026/08/05)
     }
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
