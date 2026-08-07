@@ -125,12 +125,30 @@ public class Step01VariableTest extends PlainTestCase {
     private Integer instanceHangar;
     private String instanceMagiclamp;
 
+    // #1on1: インスタンス変数とは？ (2026/08/07)
+    // インスタンスの中に入ってる変数 → インスタンスに属している変数
+    // (前回、メンバー変数とインスタンス変数の話をした by こはまさん)
+    // BigDecimalとStringのインスタンス変数のコード読んでみた。
+
+    // テスト実行時のエディター内でのコードイメージ:
+    //  Step01VariableTest variableTest = new Step01VariableTest();
+    //  variableTest.test_variable_basic();
+
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_instance_variable_default_String() {
         String sea = instanceBroadway;
         log(sea); // your answer? => null
 
         // kohama instanceBroadway はインスタンスのアドレスが格納される変数。"String instanceBroadway" だけだとヌルポっぽい。
+        // #1on1: 変数のアドレスの話を振り返り。 (2026/08/07)
+        // ヌルポ: NullPointerException
+        // instanceBroadway.toLowerCase() みたいに、nullの変数に対して、無理やりメソッド呼び出しすると発生。
+        // 実行時例外と呼ぶ。処理が中断してしまいました。
+        // プログラミング言語の決め、Javaの場合、これはほぼバグでしょうということで、中断するようにした。
+
+        // 白紙の紙を渡す(nullを渡す)のは大丈夫なんだけど、
+        // 白紙の紙の状態でメソッドを呼ぶのはダメ。(by こはまさん)
+        // nullの例外に関しては、step7とかでまたじっくりやります (by jflute)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -139,8 +157,11 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // your answer? => 0
 
         // kohama primitive な型なので、変数に値が直接格納される。宣言時に何も代入していないので、中身は未定義ということになるが、まあ0になりそうだと思った。
-        // TODO kohama [いいね] そのとおり、コンパイルエラーになってないということは何かしらのデフォルト値が入るということですね。 by jflute (2026/08/05)
+        // done kohama [いいね] そのとおり、コンパイルエラーになってないということは何かしらのデフォルト値が入るということですね。 by jflute (2026/08/05)
         // 一方で、ローカル変数だと、中身が未定義で使用するとコンパイルエラーになります。
+        // e.g.
+        //  int land;
+        //  log(land); // コンパイルエラー
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -149,8 +170,24 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // your answer? => null
 
         // kohama primitive な int と違って、Integer はオブジェクト（？）なので、Stringの時と同じ挙動だと思った。
-        // TODO kohama [ふぉろー] オブジェクトで合ってます。プリミティブ型に対してオブジェクト型と呼びます。 by jflute (2026/08/05)
+        // done kohama [ふぉろー] オブジェクトで合ってます。プリミティブ型に対してオブジェクト型と呼びます。 by jflute (2026/08/05)
         // (違う視点の言葉で、Integerはラッパー型とも呼ばれます)
+        //
+        // オブジェクト型: プリミティブ型以外のデータ型 (クラスになってるもの) 全部
+        //  e.g. String,Integer,Step01VariableTest
+        //
+        // ラッパー型: プリミティブ型(8個)にそれぞれ対応するオブジェクト型(8個)
+        //  e.g. Integer, Long, Boolean, Character... (8個)
+        //       int      long  boolean  char
+        //
+        // 実は、String や BigDecimal はラッパー型ではない。
+        // ラッピングはしてるけど、文法上のラッパー型というわけではない。
+        //
+        // 独自のintのラッパークラスを作ることはできる？ by こはまさん
+        // yes, ただ、Javaから特別扱いされないただのクラスになるので...
+        // KohaInt koha = new KohaInt(99); // 99を直接代入できない。
+        // KohaInt hyakuKoha = koha + 1;   // これもできない。"+" が利かない。
+        // まさしく、BigDecimalがこれ (かわいそう)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -164,11 +201,20 @@ public class Step01VariableTest extends PlainTestCase {
         // kohama 整理：String は immutable だが、新しいインスタンス "bbb" を作って、そのアドレスを instanceBroadway に代入することは可能。
         //        test関数からヘルパー関数へは、中身が "magician" のインスタンスのアドレスが渡される。そのアドレスを、ヘルパー関数が独自で宣言した instanceMagiclamp に代入。
         //        ヘルパー側の instanceMagiclamp に新しく、 中身が "burn" のインスタンスのアドレスを代入しても、test関数には影響なし！
-        // TODO kohama [いいね] アドレスの旅のイメージしっかりできてますね！ by jflute (2026/08/05)
+        // done kohama [いいね] アドレスの旅のイメージしっかりできてますね！ by jflute (2026/08/05)
         // メソッド呼び出しは、変数という箱そのものが引き渡されるわけではなく、その中身が引き渡されますので、
         // 今回たまたま同名の別の変数(別の箱)と言えます。
 
-        // TODO jflute 1on1にて、インスタンス変数を改めて深掘り (2026/08/05)
+        // done jflute 1on1にて、インスタンス変数を改めて深掘り (2026/08/05)
+
+        // #1on1: ローカル変数とインスタンス変数の寿命 (Lifecycle) (2026/08/07)
+        // ローカル変数は、基本的に短命。メソッド実行時に確保されて、終わったらすぐに破棄される。
+        // インスタンス変数は、インスタンスの寿命と一致する。
+        // 短命な時もあれば、長寿のときもある。
+
+        // 質問: インスタンスが消える時って？
+        // 参照されなくなったら、ガベージ対象になって、そのうちガベージコレクションで破棄される。
+        // C言語みたいに、自分で明示的にfreeはしない。
     }
 
     private void helpInstanceVariableViaMethod(String instanceMagiclamp) {
