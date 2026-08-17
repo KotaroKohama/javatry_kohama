@@ -253,7 +253,12 @@ public class Step01VariableTest extends PlainTestCase {
         StringBuilder sea = new StringBuilder("harbor");
         int land = 415;
         helpMethodArgumentMethodcall(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor416
+
+        // kohama Mutable Method-callって書いてあるから、こうなりそうなんだけど、理由は...。
+        // StringBuilderのappendは、AbstractStringBuilderのappendをオーバーライドしてるぽい。
+        // append(long i)は、結局その処理をappend(String str)に投げている。
+        // append(String str)で、countは += len されているけど、valueは...？
     }
 
     private void helpMethodArgumentMethodcall(StringBuilder sea, int land) {
@@ -269,7 +274,9 @@ public class Step01VariableTest extends PlainTestCase {
         StringBuilder sea = new StringBuilder("harbor");
         int land = 415;
         helpMethodArgumentVariable(sea, land);
-        log(sea); // your answer? => 
+        log(sea); // your answer? => harbor
+
+        // kohama ヘルパー関数の中で sea = new StringBuilderしても、テスト関数のseaは変わらない。
     }
 
     private void helpMethodArgumentVariable(StringBuilder sea, int land) {
@@ -297,8 +304,15 @@ public class Step01VariableTest extends PlainTestCase {
      * o すべての変数をlog()でカンマ区切りの文字列で表示
      * </pre>
      */
+
+    private int piari;
+
     public void test_variable_writing() {
-        // define variables here
+        String sea = "mystic";
+        Integer land = null;
+        log(sea + ", " + land + ", " + piari);
+
+        // kohama piari に private 修飾子を付けなくても動いた。そらそうか。
     }
 
     // ===================================================================================
@@ -309,12 +323,17 @@ public class Step01VariableTest extends PlainTestCase {
      * (変数についてあなたのオリジナルの質問形式のエクササイズを作ってみましょう)
      * <pre>
      * _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-     * your question here (ここにあなたの質問を):
-     * 
+     * メソッド終了時の変数 sea の中身は？
      * _/_/_/_/_/_/_/_/_/_/
      * </pre>
      */
     public void test_variable_yourExercise() {
-        // write your code here
+        String sea = "biz";
+        String land = "reach";
+        land = sea;
+        sea = land;
+        log(sea); // your answer? => biz
+
+        // kohama swapに失敗したプログラマみたいなエクササイズ
     }
 }
