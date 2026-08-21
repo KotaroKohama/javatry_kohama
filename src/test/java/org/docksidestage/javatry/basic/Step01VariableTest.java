@@ -105,6 +105,7 @@ public class Step01VariableTest extends PlainTestCase {
         // add()のソースコードリーディングもしてみた。JavaDocも紹介。
         // #1on1: immutableとmutable, メリデメ (2026/07/17)
         // immutableのメリット: 書き換えられないから安全/安心
+        //                   + 読み飛ばしとか可読性が良くなる (2026/08/21)
         // immutableのデメリット: インスタンス多くなる、sea.add()のケース
         // mutableのメリット: いちいちインスタンス作らない、書くのが簡単になりやすい
         // mutableのデメリット: 書き換えられちゃうから不安
@@ -231,12 +232,20 @@ public class Step01VariableTest extends PlainTestCase {
     //                                 ---------------------
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_method_argument_immutable_methodcall() {
-        String sea = "harbor";
+        String sea = "harbor"; // 6丁目6番地にharborインスタンス作って、sea変数に住所を書き写す
         int land = 415;
         helpMethodArgumentImmutableMethodcall(sea, land);
         log(sea); // your answer? => harbor
 
         // kohama sea.concat() は、結合した文字列で新しいインスタンスを作ってreturnする人。
+        // #1on1: immutableをわかっていれば、helpメソッド読まないでも答えが確定しちゃう (2026/08/21)
+        // immutableというのが読み手の情報になっている。
+        // immutable引数は、事象が一つしか発生しない。helpでいじってない。
+        // mutable引数は、事象が二つ存在する。helpでいじってない、いじってる。
+        // つまり、事象が減れば、読み手は確定読みがしやすくなる。
+        // 制限というのは、できないという負の側面の反面、安全性+可読性の正の側面も持つ。
+        // 制限をいかにうまくデザインするか？が、使いやすいプロダクトのポイントになる。
+        // terminal, rmコマンドのデザインのお話。
     }
 
     private void helpMethodArgumentImmutableMethodcall(String sea, int land) {
@@ -259,6 +268,7 @@ public class Step01VariableTest extends PlainTestCase {
         // StringBuilderのappendは、AbstractStringBuilderのappendをオーバーライドしてるぽい。
         // append(long i)は、結局その処理をappend(String str)に投げている。
         // append(String str)で、countは += len されているけど、valueは...？
+        // #1on1: append()の中身を一緒に追ってみた。char[] valueが書き換えられてる (2026/08/21)
     }
 
     private void helpMethodArgumentMethodcall(StringBuilder sea, int land) {
@@ -271,12 +281,17 @@ public class Step01VariableTest extends PlainTestCase {
     //                                   -------------------
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_variable_method_argument_variable_assignment() {
+        // #1on1: new StringBuilder()のコンストラクターの中身のコードリーディング (2026/08/21)
+        // StringのgetChars()を呼び出して、char[] のコピーを行っている。
+        // 引数で受け取ったStringインスタンスとのつながりは何もない(持たない)。
         StringBuilder sea = new StringBuilder("harbor");
         int land = 415;
         helpMethodArgumentVariable(sea, land);
         log(sea); // your answer? => harbor
 
         // kohama ヘルパー関数の中で sea = new StringBuilderしても、テスト関数のseaは変わらない。
+        // #1on1: $質問: StringBuilder sea = "harbor"; はできる？ (2026/08/21)
+        // StringクラスとStringBuilderクラスは全くの別物なのでできない。
     }
 
     private void helpMethodArgumentVariable(StringBuilder sea, int land) {
@@ -313,6 +328,18 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea + ", " + land + ", " + piari);
 
         // kohama piari に private 修飾子を付けなくても動いた。そらそうか。
+        // #1on1: Javaの場合、省略したらパッケージスコープというものになります (2026/08/21)
+        // そういう意味ではスコープ自体は必須、何も書かなかったらパッケージスコープ。
+        // 実際に試してみた。
+        //
+        // private: 自分のクラスのみ
+        // パッケージスコープ: 同じパッケージのクラスのみ
+        // protected: サブクラス + 同じパッケージのクラスのみ // ！?
+        //            (サブクラスのパッケージは自由、どこでもOK)
+        // public: ぜんぶ
+        //
+        // (少なくとも)jflute個人は、protectedは基本サブクラススコープとして使って、
+        // パッケージスコープとしてのprotectedは、よほど定型パターン以外では使わないようにしている。
     }
 
     // ===================================================================================
@@ -335,5 +362,8 @@ public class Step01VariableTest extends PlainTestCase {
         log(sea); // your answer? => biz
 
         // kohama swapに失敗したプログラマみたいなエクササイズ
+        // #1on1: 戻れないってところじわりくる良いポイント (2026/08/21)
+
+        // #1on1: Githubアカウントのお話 (2026/08/21)
     }
 }
