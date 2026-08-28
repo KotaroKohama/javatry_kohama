@@ -25,7 +25,7 @@ import org.docksidestage.unit.PlainTestCase;
  * Operate exercise as javadoc. If it's question style, write your answer before test execution. <br>
  * (javadocの通りにエクササイズを実施。質問形式の場合はテストを実行する前に考えて答えを書いてみましょう)
  * @author jflute
- * @author your_name_here
+ * @author kotaro.kohama
  */
 public class Step02IfForTest extends PlainTestCase {
 
@@ -52,7 +52,7 @@ public class Step02IfForTest extends PlainTestCase {
         } else {
             sea = 7;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 7
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -67,7 +67,7 @@ public class Step02IfForTest extends PlainTestCase {
         } else {
             sea = 9;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 7
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -80,34 +80,38 @@ public class Step02IfForTest extends PlainTestCase {
         } else if (land && sea >= 904) {
             sea = 7;
             sea = ++sea * 2;
-        } else if (sea >= 903 || land) {
-            if (sea % 2 == 0) {
-                sea = sea++ * 2;
+        } else if (sea >= 903 || land) { // ここ
+            if (sea % 2 == 0) { // true
+                sea = sea++ * 2; // sea = 1809
+                // log(sea);
             }
-            if (!land) {
-                land = true;
+            if (!land) { // true
+                land = true; // land = true
             } else if (sea <= 903) {
                 sea++;
             }
-            if (sea < 1810) {
-                sea = 8;
+            if (sea < 1810) { // true
+                sea = 8; // sea = 8
             }
-        } else if (sea == 8) {
+        } else if (sea == 8) { // 入らない
             sea++;
             land = false;
-        } else {
+        } else { // 入らない
             sea = 9;
         }
-        if (sea >= 9 || (sea > 7 && sea < 9)) {
+        if (sea >= 9 || (sea > 7 && sea < 9)) { // 読まなくていい
             sea--;
             if (sea % 2 == 1) {
                 sea++;
             }
         }
-        if (land) {
-            sea = 10;
+        if (land) { // 入る
+            sea = 10; // sea = 10
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => 10
+
+        // kohama: 誰だこんなコードを書いたのは！！
+        // sea = sea++ * 2 は 1908 になるらしい。後置インクリメントだから、式全体を評価してから (sea * 2 で 1908) になってからインクリメントかと。
     }
 
     // ===================================================================================
@@ -115,7 +119,7 @@ public class Step02IfForTest extends PlainTestCase {
     //                                                                       =============
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_inti_basic() {
-        List<String> stageList = prepareStageList();
+        List<String> stageList = prepareStageList();  // [ "broadway", "dockside", "hanger", "magiclamp" ]
         String sea = null;
         for (int i = 0; i < stageList.size(); i++) {
             String stage = stageList.get(i);
@@ -123,22 +127,24 @@ public class Step02IfForTest extends PlainTestCase {
                 sea = stage;
             }
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => dockside
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_foreach_basic() {
-        List<String> stageList = prepareStageList();
+        List<String> stageList = prepareStageList();  // [ "broadway", "dockside", "hanger", "magiclamp" ]
         String sea = null;
         for (String stage : stageList) {
             sea = stage;
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => magiclamp
+
+        // kohama: どえー、Javaにも範囲forあるんですね。
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_foreach_continueBreak() {
-        List<String> stageList = prepareStageList();
+        List<String> stageList = prepareStageList();  // [ "broadway", "dockside", "hanger", "magiclamp" ]
         String sea = null;
         for (String stage : stageList) {
             if (stage.startsWith("br")) {
@@ -149,12 +155,12 @@ public class Step02IfForTest extends PlainTestCase {
                 break;
             }
         }
-        log(sea); // your answer? => 
+        log(sea); // your answer? => hanger
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_listforeach_basic() {
-        List<String> stageList = prepareStageList();
+        List<String> stageList = prepareStageList();  // [ "broadway", "dockside", "hanger", "magiclamp" ]
         StringBuilder sb = new StringBuilder();
         stageList.forEach(stage -> {
             if (sb.length() > 0) {
@@ -165,7 +171,9 @@ public class Step02IfForTest extends PlainTestCase {
             }
         });
         String sea = sb.toString();
-        log(sea); // your answer? => 
+        log(sea); // your answer? => dockside
+
+        // kohama: functional programmingってやつかも。
     }
 
     // ===================================================================================
@@ -176,7 +184,20 @@ public class Step02IfForTest extends PlainTestCase {
      * (prepareStageList()のリストから "a" が含まれているものだけのリストを作成して、それをループで回してログに表示しましょう。(Stream APIなしで))
      */
     public void test_iffor_making() {
-        // write if-for here
+        List<String> stageList = prepareStageList();
+        for (String stage : stageList) {
+            if (stage.contains("a")) {
+                log(stage);
+            }
+        }
+
+//        stageList.forEach(stage -> {
+//            if (stage.contains("a")) {
+//                log(stage);
+//            }
+//        });
+
+        // kohama: 素直が一番。
     }
 
     // ===================================================================================
@@ -188,18 +209,28 @@ public class Step02IfForTest extends PlainTestCase {
      */
     public void test_iffor_refactor_foreach_to_forEach() {
         List<String> stageList = prepareStageList();
-        String sea = null;
-        for (String stage : stageList) {
-            if (stage.startsWith("br")) {
-                continue;
-            }
-            sea = stage;
-            if (stage.contains("ga")) {
-                break;
-            }
-        }
-        log(sea); // should be same as before-fix
+        stageList.forEach(stage -> {
+            if (!stage.startsWith("br") && stage.contains("ga"))
+                log(stage);
+        });
     }
+
+    // kohama: breakできない！ isBreakみたいなフラグを使おうと思っても、ラムダ式にはできないらしい。
+
+//    public void test_iffor_refactor_foreach_to_forEach_original() {
+//        List<String> stageList = prepareStageList();
+//        String sea = null;
+//        for (String stage : stageList) {
+//            if (stage.startsWith("br")) {
+//                continue;
+//            }
+//            sea = stage;
+//            if (stage.contains("ga")) {
+//                break;
+//            }
+//        }
+//        log(sea); // should be same as before-fix
+//    }
 
     /**
      * Make your original exercise as question style about if-for statement. <br>
@@ -226,4 +257,7 @@ public class Step02IfForTest extends PlainTestCase {
         stageList.add("magiclamp");
         return stageList;
     }
+
+    // kohama: ArrayList<>()を読み解きたい気持ち、あります
+    // List は Collection を継承？したインターフェースで、ArrayList は List を実装したクラス。
 }
