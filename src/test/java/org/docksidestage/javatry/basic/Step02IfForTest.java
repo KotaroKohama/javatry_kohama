@@ -82,11 +82,11 @@ public class Step02IfForTest extends PlainTestCase {
             sea = ++sea * 2;
         } else if (sea >= 903 || land) { // ここ
             if (sea % 2 == 0) { // true
-                sea = sea++ * 2; // sea = 1809
-                // log(sea);
+                sea = sea++ * 2; // sea = 1809 // $掛け算の後、足されたと思った？
+                log("@@@: " + sea); // 1808 (++してもしなくても)
             }
             if (!land) { // true
-                land = true; // land = true
+                land = true; // land = true なのでここを通ればseaは10
             } else if (sea <= 903) {
                 sea++;
             }
@@ -112,14 +112,50 @@ public class Step02IfForTest extends PlainTestCase {
 
         // kohama: 誰だこんなコードを書いたのは！！
         // sea = sea++ * 2 は 1908 になるらしい。後置インクリメントだから、式全体を評価してから (sea * 2 で 1908) になってからインクリメントかと。
+        // #1on1: ここはJavaの罠なところで、実際はみんな式の途中でインクリメントは使わないようにしている (2026/09/04)
+        // 厳密には前置だったら大丈夫とかあるけど、その棲み分けを覚えておくのも面倒。
+        // jfluteは、単独行でしかインクリメントは使わないようにしている。
+        // かつ、前置がほとんど。二重の防波堤で落とし穴に落ちないようにしている。
+        // 「誰だこんなコードを書いたのは！！」は正しい。
+        //
+        // #1on1: 結局10, やっぱり誰だこんなコードを書いたのは！！が再び (2026/09/04)
+        // javatryとしては、ifのトレーニングなので地道に読んでもらってGood。
+        //
+        // ソースコードリーディングのコツ「漠然読み」
+        // 
+        // (スクロールして輪郭だけ見る)
+        // o 漠然読みで構造把握 (全体像を見る)
+        //  → 変数宣言、大中小のif, ログ出しの5つパート
+        //
+        // o 当たりを付けてフォーカス読み
+        //  → 目的に沿って当たりを探す、seaから逆さ読みでsea=10を見つける
+        //  → or 全体像を把握しているので、自然とsea=10が目に入りやすい
+        // 
+        // 最初から当たりを見つけに行く読み方。(裏ルートがあること前提で読む)
+        // 
+        // 当然、ギャンブルに負けることはあります。でも、損はないという考え方。
+        // 構造把握してて、ある程度踏み込んでるので、０から網羅読みするよりは速く読めるようになってる。
+        // (頭の中で地図があって現在地がわかる状態で読む方が安定する)
+        //
+        // あとは、次の当たりが見つかることもある。
+        // 3,4回繰り返しても、０から網羅読みするよりは速い可能性。
+        // 
+        // よもやま: 仮説思考的なコードリーディング!?
+        // 
+        // TODO kohama [読み物課題] My Favorite Book: 仮説思考 by jflute (2026/09/04)
+        // https://jflute.hatenadiary.jp/entry/20150111/kasetsu
+        //
+        // TODO kohama [読み物課題] jfluteのプログラマーオススメ五冊 by jflute (2026/09/04)
+        // https://jflute.hatenadiary.jp/entry/20150727/fivebooks
     }
 
+    // TODO jflute 次回1on1はforから (2026/09/04)
     // ===================================================================================
     //                                                                       for Statement
     //                                                                       =============
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_inti_basic() {
-        List<String> stageList = prepareStageList();  // [ "broadway", "dockside", "hanger", "magiclamp" ]
+        List<String> stageList = prepareStageList(); // [ "broadway", "dockside", "hanger", "magiclamp" ]
         String sea = null;
         for (int i = 0; i < stageList.size(); i++) {
             String stage = stageList.get(i);
@@ -132,7 +168,7 @@ public class Step02IfForTest extends PlainTestCase {
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_foreach_basic() {
-        List<String> stageList = prepareStageList();  // [ "broadway", "dockside", "hanger", "magiclamp" ]
+        List<String> stageList = prepareStageList(); // [ "broadway", "dockside", "hanger", "magiclamp" ]
         String sea = null;
         for (String stage : stageList) {
             sea = stage;
@@ -144,7 +180,7 @@ public class Step02IfForTest extends PlainTestCase {
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_foreach_continueBreak() {
-        List<String> stageList = prepareStageList();  // [ "broadway", "dockside", "hanger", "magiclamp" ]
+        List<String> stageList = prepareStageList(); // [ "broadway", "dockside", "hanger", "magiclamp" ]
         String sea = null;
         for (String stage : stageList) {
             if (stage.startsWith("br")) {
@@ -160,7 +196,7 @@ public class Step02IfForTest extends PlainTestCase {
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_for_listforeach_basic() {
-        List<String> stageList = prepareStageList();  // [ "broadway", "dockside", "hanger", "magiclamp" ]
+        List<String> stageList = prepareStageList(); // [ "broadway", "dockside", "hanger", "magiclamp" ]
         StringBuilder sb = new StringBuilder();
         stageList.forEach(stage -> {
             if (sb.length() > 0) {
@@ -191,11 +227,11 @@ public class Step02IfForTest extends PlainTestCase {
             }
         }
 
-//        stageList.forEach(stage -> {
-//            if (stage.contains("a")) {
-//                log(stage);
-//            }
-//        });
+        //        stageList.forEach(stage -> {
+        //            if (stage.contains("a")) {
+        //                log(stage);
+        //            }
+        //        });
 
         // kohama: 素直が一番。
     }
@@ -208,6 +244,9 @@ public class Step02IfForTest extends PlainTestCase {
      * (foreach文をforEach()メソッドへの置き換えてみましょう (修正前と修正後で実行結果が同じになるように))
      */
     public void test_iffor_refactor_foreach_to_forEach() {
+        // TODO kohama stageListの内容が変わる想定でも互換性を保つようにしてみましょう by jflute (2026/09/04)
+        // e.g. hangarが存在しない時、bongarという新しい要素が追加された時、stageList空っぽのとき
+        // でも、前のプログラムと同じ結果になるように。
         List<String> stageList = prepareStageList();
         stageList.forEach(stage -> {
             if (!stage.startsWith("br") && stage.contains("ga"))
@@ -217,20 +256,20 @@ public class Step02IfForTest extends PlainTestCase {
 
     // kohama: breakできない！ isBreakみたいなフラグを使おうと思っても、ラムダ式にはできないらしい。
 
-//    public void test_iffor_refactor_foreach_to_forEach_original() {
-//        List<String> stageList = prepareStageList();
-//        String sea = null;
-//        for (String stage : stageList) {
-//            if (stage.startsWith("br")) {
-//                continue;
-//            }
-//            sea = stage;
-//            if (stage.contains("ga")) {
-//                break;
-//            }
-//        }
-//        log(sea); // should be same as before-fix
-//    }
+    //    public void test_iffor_refactor_foreach_to_forEach_original() {
+    //        List<String> stageList = prepareStageList();
+    //        String sea = null;
+    //        for (String stage : stageList) {
+    //            if (stage.startsWith("br")) {
+    //                continue;
+    //            }
+    //            sea = stage;
+    //            if (stage.contains("ga")) {
+    //                break;
+    //            }
+    //        }
+    //        log(sea); // should be same as before-fix
+    //    }
 
     /**
      * Make your original exercise as question style about if-for statement. <br>
