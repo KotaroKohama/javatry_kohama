@@ -15,7 +15,10 @@
  */
 package org.docksidestage.javatry.basic;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
 
 import org.docksidestage.unit.PlainTestCase;
 
@@ -141,14 +144,14 @@ public class Step02IfForTest extends PlainTestCase {
         // 
         // よもやま: 仮説思考的なコードリーディング!?
         // 
-        // TODO kohama [読み物課題] My Favorite Book: 仮説思考 by jflute (2026/09/04)
+        // done kohama [読み物課題] My Favorite Book: 仮説思考 by jflute (2026/09/04)
         // https://jflute.hatenadiary.jp/entry/20150111/kasetsu
         //
-        // TODO kohama [読み物課題] jfluteのプログラマーオススメ五冊 by jflute (2026/09/04)
+        // done kohama [読み物課題] jfluteのプログラマーオススメ五冊 by jflute (2026/09/04)
         // https://jflute.hatenadiary.jp/entry/20150727/fivebooks
     }
 
-    // TODO jflute 次回1on1はforから (2026/09/04)
+    // done jflute 次回1on1はforから (2026/09/04)
     // ===================================================================================
     //                                                                       for Statement
     //                                                                       =============
@@ -175,6 +178,22 @@ public class Step02IfForTest extends PlainTestCase {
         log(sea); // your answer? => magiclamp
 
         // kohama: どえー、Javaにも範囲forあるんですね。
+
+        // #1on1: Javaの文法としてのループ2つ (2026/09/18)
+        // o intあいのfor文: Java当初から (1995年)
+        // o 拡張for文(foreach文): Java10年目くらいから (2005年)
+        //
+        // intあいのfor文は毎回探しにいく。
+        // foreach文は次の方どうぞ方式。
+        //
+        // 回す方式が違う。
+        //
+        // リストが ArrayList の場合、どっちにせよ配列添字アクセスで速い。
+        // リストが LinkedList の場合、get(i)だと内部ループで探しちゃう。
+        //
+        // LinkedListの使い所は？
+        // A, B, C のリストに対して、A, A', B, C と 途中にA'を追加する時。
+        // LinkedListならズレるとかがないので、速い。(更新が速い)
     }
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
@@ -220,7 +239,9 @@ public class Step02IfForTest extends PlainTestCase {
      */
     public void test_iffor_making() {
         List<String> stageList = prepareStageList();
+        // A: 所属は test_メソッド
         for (String stage : stageList) {
+            // B: 所属は test_メソッド
             if (stage.contains("a")) {
                 log(stage);
             }
@@ -243,12 +264,20 @@ public class Step02IfForTest extends PlainTestCase {
      * (foreach文をforEach()メソッドへの置き換えてみましょう (修正前と修正後で実行結果が同じになるように))
      */
     public void test_iffor_refactor_foreach_to_forEach() {
-        // TODO kohama stageListの内容が変わる想定でも互換性を保つようにしてみましょう by jflute (2026/09/04)
+        // done kohama stageListの内容が変わる想定でも互換性を保つようにしてみましょう by jflute (2026/09/04)
         // e.g. hangarが存在しない時、bongarという新しい要素が追加された時、stageList空っぽのとき
         // でも、前のプログラムと同じ結果になるように。
         List<String> stageList = prepareStageList();
+
+        // #1on1: $ Stack は使うなと言われたから Deque (2026/09/18)
+        // 他とか、StringBuilder とか new String[1] わりと多い。
+        // Stack と Deque の違い。synchronized のロックコストのお話。
+        // 素晴らしい、しっかり配慮できている。
         Deque<String> seaDeque = new ArrayDeque<>();
+        // A: 所属は test_メソッド
         stageList.forEach(stage -> {
+            // B: 所属は -> {} (AbcConsumerのaccept())
+            // なので、{} 内は別クラス別メソッド
             if (seaDeque.peek() != null && seaDeque.peek().contains("ga")) {
                 return;
             }
@@ -256,9 +285,35 @@ public class Step02IfForTest extends PlainTestCase {
                 seaDeque.push(stage);
             }
         });
-
         log(seaDeque.peek());
     }
+    // #1on1: 外側のローカル変数の再代入が -> {} の中でできない理由は？ (2026/09/18)
+    // $forEach()メソッドは、場合によっては順番がバラバラになる可能性？
+    //
+    // そもそもforEach()メソッドの仕組み。
+    // $おーーーーーーーー、ArrayListにやってといてと渡してるだけだから...
+    // forEach()メソッドのコード読んで見ると、ただのforの代理人。
+    // ただのメソッド。コンパイラーからすると、ループかどうかわかってない。
+    // -> {} (Lambda式) は、実は単なるクラス宣言＆newインスタンスしてる記法。
+    // イメージ new AbcConsumer.accept() { ってやっているようなもの。
+    //
+    // 別クラス別メソッドで、外側のローカル変数を書き換えるってのはできなさそう。
+    // ローカル変数のコンセプトからしたら、ローカルの外に行っちゃってて...
+    // もし仮に書き換えることができるようになってたとしたら...
+    // 時系列的なカオスを生みやすくなる。時系列的な矛盾も発生する。
+    // なので、Javaではできなくしてる。ローカル変数のコンセプトを維持するために。
+    //
+    // but 固定の変数 (immutableな変数) であれば、参照はできる。(副作用も発生しにくでしょうと)
+    // mutableな変数だと、Lambda式から見て、時系列的な偶然性に依存することになる。
+    //
+    // なので、seaDeque の変数の指し示す先を変えることはできないけど、
+    // 指し示す先のインスタンスの中で保持されている変数はご自由に。(mutableクラスなら)
+    //
+    // forEach()メソッド: できないことだらけのループ (外側変数書き換えダメ、continue/break使えない)
+    // ただ、Java20年目くらいから (2015年くらいから) に登場したわけだけど...
+    // 後から出てきて、意味のないもの追加するわけないので、なにか存在意義があるはず。
+
+    // TODO jflute forEach()メソッドの存在意義は？ (2026/09/18)
 
     /**
      * Make your original exercise as question style about if-for statement. <br>
@@ -293,6 +348,7 @@ public class Step02IfForTest extends PlainTestCase {
     }
 
     private List<String> prepareCharacterList() {
+        // #1on1: いいね、名前がいい (2026/09/18)
         List<String> characterList = new ArrayList<>();
         characterList.add("mickey");
         characterList.add("donald");
