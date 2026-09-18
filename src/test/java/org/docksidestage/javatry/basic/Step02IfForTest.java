@@ -15,8 +15,7 @@
  */
 package org.docksidestage.javatry.basic;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import org.docksidestage.unit.PlainTestCase;
 
@@ -248,41 +247,37 @@ public class Step02IfForTest extends PlainTestCase {
         // e.g. hangarが存在しない時、bongarという新しい要素が追加された時、stageList空っぽのとき
         // でも、前のプログラムと同じ結果になるように。
         List<String> stageList = prepareStageList();
+        Deque<String> seaDeque = new ArrayDeque<>();
         stageList.forEach(stage -> {
-            if (!stage.startsWith("br") && stage.contains("ga"))
-                log(stage);
+            if (seaDeque.peek() != null && seaDeque.peek().contains("ga")) {
+                return;
+            }
+            if (!stage.startsWith("br")) {
+                seaDeque.push(stage);
+            }
         });
+
+        log(seaDeque.peek());
     }
-
-    // kohama: breakできない！ isBreakみたいなフラグを使おうと思っても、ラムダ式にはできないらしい。
-
-    //    public void test_iffor_refactor_foreach_to_forEach_original() {
-    //        List<String> stageList = prepareStageList();
-    //        String sea = null;
-    //        for (String stage : stageList) {
-    //            if (stage.startsWith("br")) {
-    //                continue;
-    //            }
-    //            sea = stage;
-    //            if (stage.contains("ga")) {
-    //                break;
-    //            }
-    //        }
-    //        log(sea); // should be same as before-fix
-    //    }
 
     /**
      * Make your original exercise as question style about if-for statement. <br>
      * (if文for文についてあなたのオリジナルの質問形式のエクササイズを作ってみましょう)
      * <pre>
      * _/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/_/
-     * your question here (ここにあなたの質問を):
+     * prepareCharacterList()が返す文字列のリストの中から、
+     * 先頭の文字と末尾の文字が一致しているものだけを出力してください。
      * 
      * _/_/_/_/_/_/_/_/_/_/
      * </pre>
      */
     public void test_iffor_yourExercise() {
-        // write your code here
+        List<String> characterList = prepareCharacterList();
+        characterList.forEach(character -> {
+            if (character.charAt(0) == character.charAt(character.length() - 1)) {
+                log(character);
+            }
+        });
     }
 
     // ===================================================================================
@@ -295,6 +290,16 @@ public class Step02IfForTest extends PlainTestCase {
         stageList.add("hangar");
         stageList.add("magiclamp");
         return stageList;
+    }
+
+    private List<String> prepareCharacterList() {
+        List<String> characterList = new ArrayList<>();
+        characterList.add("mickey");
+        characterList.add("donald");
+        characterList.add("eeyore");
+        characterList.add("tiger");
+        characterList.add("goofy");
+        return characterList;
     }
 
     // kohama: ArrayList<>()を読み解きたい気持ち、あります
