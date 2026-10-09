@@ -40,6 +40,25 @@ public class Step03DataTypeTest extends PlainTestCase {
     public void test_datatype_basicType() {
         String sea = "mystic";
         Integer land = 416;
+
+        // #1on1: Date, DateTimeという言葉 (2026/10/09)
+        // 日付: 年月日                   // Date
+        // 日時: 年月日 + 時分秒 (+ ミリ秒) // DateTime
+        //
+        // 日付と日時は別物扱い。
+        // ただ、歴史的なところもあって、そうじゃないケースもある。
+        // e.g. java.util.Date, OracleDB DATE型が時分秒, dateコマンド
+        // $ソフトウェアとして
+        // SQLの解析精度、実行計画とか
+        //
+        // jflute的な分析、日付と日時をひとまとめに表現する言葉って？
+        // e.g. 日付系クラス、日付クラス
+        //
+        // 言葉の解釈にこだわるのはITエンジニア大事。
+        //
+        // $命名が一番大変
+        // dispenser
+        //
         LocalDate piari = LocalDate.of(2001, 9, 4);
         LocalDateTime bonvo = LocalDateTime.of(2001, 9, 4, 12, 34, 56);
         Boolean dstore = true;
@@ -83,6 +102,11 @@ public class Step03DataTypeTest extends PlainTestCase {
             sea = 0;
         }
         log(sea); // your answer? => 2
+
+        // #1on1 (ダウン)キャストすると、情報のロスが生まれてつらい経験 (2026/10/09)
+        // あんまり、こういうのに頼らないプログラミングしたいですね。
+        // 言語の細かいルールは、その言語を長くやってる人でも覚えてないもの。
+        // レアな言語の文法に依存したプログラムは避けられるなら避けた方がいい。
     }
 
     // ===================================================================================
@@ -95,6 +119,8 @@ public class Step03DataTypeTest extends PlainTestCase {
         log(sea); // your answer? => hanger
     }
 
+    // #1on1: Javaでimmutableなクラスを原始的に作るとなったらこうなる (2026/10/09)
+    // finalは必須ではない、メンテする人が安全、読む人が読みやすい。
     private static class St3ImmutableStage {
 
         private final String stageName;
