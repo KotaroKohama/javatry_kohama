@@ -40,10 +40,43 @@ public class Step04MethodTest extends PlainTestCase {
 
     /** Same as the previous method question. (前のメソッドの質問と同じ) */
     public void test_method_call_many() {
+        // #1on1: Javaにおける関数という言葉 (2026/10/23)
+        // 文法的には関数という言葉は基本出てこなくて、メソッドと呼ぶ。
+        // 唯一、FunctionalInterfaceというアノテーションで関数という言葉が出てくる。
+        // 関数型プログラミングのコンセプトを取り入れた機能で、関数という言葉を使ってる。
+        // なのでC言語言うような関数のニュアンス関数は出てこない。
+        // $関数の方が馴染みがある、メソッドはクラスの中の関数をメソッドと呼ぶイメージ
+        //
+        // 関数: 引数戻り値の世界
+        // メソッド: 引数戻り値 + インスタンス内部の情報/状態
+        //
+        // メソッドも、オブジェクト指向としての概念的なメソッドという用語(広義)と、
+        // Javaの文法用語としての呼び名としてのメソッドという用語(狭義)が、混じる。
+        //
+        // 関数も、数学の関数 or 関数型プログラミングの関数としての用語(広義)と、
+        // 何言語の文法用語としての呼び名としての関数という用語(狭義)が、混じる。
+        //
+        // 概念用語と文法用語の違い。
+        //
         String sea = functionSomething("mystic");
         consumeSomething(supplySomething());
         runnableSomething();
         log(sea); // your answer? => mysmys
+
+        // #1on1: $Pythonは、関数の中に関数を作ることができて頭おかしい (2026/10/23)
+        // Javaも負けてられない。メソッドの中に名前付きclassを作ることもできる。
+        /*
+        public void yyy() {
+            class Xxxxx {
+            public void xxxxxxxxxxx() {
+            
+            }
+            }
+            new Xxxxx().xxxxxxxxxxx();
+        }
+         */
+
+        // #1on1: ちょこっとScalaのお話 (2026/10/23)
     }
 
     private String functionSomething(String name) {
@@ -52,12 +85,14 @@ public class Step04MethodTest extends PlainTestCase {
         return replaced;
     }
 
+    // #1on1: 引数なし戻り値ありのメソッドをSupplierと呼ぶ (2026/10/23)
     private String supplySomething() {
         String sea = "over";
         log("in supply: {}", sea);
         return sea;
     }
 
+    // #1on1: 引数あり戻り値なしのメソッドをConsumerと呼ぶ (2026/10/23)
     private void consumeSomething(String sea) {
         log("in consume: {}", sea.replace("over", "mystic"));
     }
@@ -81,6 +116,16 @@ public class Step04MethodTest extends PlainTestCase {
 
     // kohama あれ。helloMutable に渡した mutable は、プリミティブ型じゃなくて、オブジェクト型だから、参照渡しみたいになるのか...。忘れてたし、厄介だ。
 
+    // #1on1: 参照渡しのイメージ？ (2026/10/23)
+    // $ "&を付けましょう" C言語のポインター。アドレスを渡していたら参照渡しのイメージ。
+    // $自分へのアドレスを渡す。
+    //
+    // 本来の参照渡し: "&" で良い。変数自体のアドレス。
+    // 本来の値渡し: intの7とか、インスタンスへのアドレスとか。(primitiveとobjectを区別してない)
+    //
+    // いまの参照渡し: インスタンスへのアドレスを渡してる
+    // いまの値渡し: intの7とか具体的な値を渡してる
+    //
     private int helloMutable(int sea, Boolean land, St4MutableStage piari) {
         sea++;
         land = true;
@@ -130,6 +175,7 @@ public class Step04MethodTest extends PlainTestCase {
         }
     }
 
+    // TODO jflute 次回この辺から (2026/10/23)
     // ===================================================================================
     //                                                                           Challenge
     //                                                                           =========
