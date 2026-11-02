@@ -25,11 +25,13 @@ public class TicketBooth {
     //                                                                          ==========
     private static final int MAX_QUANTITY = 10;
     private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
+    private static final int TWO_DAY_PRICE = 13200;
 
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
-    private int quantity = MAX_QUANTITY;
+    private int oneDayPassportQuantity = MAX_QUANTITY;
+    private int twoDayPassportQuantity = MAX_QUANTITY;
     private Integer salesProceeds; // null allowed: until first purchase
 
     // ===================================================================================
@@ -56,18 +58,40 @@ public class TicketBooth {
      * @throws TicketShortMoneyException When the specified money is short for purchase.
      */
     public void buyOneDayPassport(Integer handedMoney) {
-        if (quantity <= 0) {
+        if (oneDayPassportQuantity <= 0) {
             throw new TicketSoldOutException("Sold out");
         }
-        --quantity;
         if (handedMoney < ONE_DAY_PRICE) {
             throw new TicketShortMoneyException("Short money: " + handedMoney);
         }
+        --oneDayPassportQuantity;
         if (salesProceeds != null) { // second or more purchase
-            salesProceeds = salesProceeds + handedMoney;
+            salesProceeds = salesProceeds + ONE_DAY_PRICE;
         } else { // first purchase
-            salesProceeds = handedMoney;
+            salesProceeds = ONE_DAY_PRICE;
         }
+    }
+
+    /**
+     * Buy two-day passport, method for park guest.
+     * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
+     * @throws TicketSoldOutException When ticket in booth is sold out.
+     * @throws TicketShortMoneyException When the specified money is short for purchase.
+     */
+    public Integer buyTwoDayPassport(Integer handedMoney) {
+        if (oneDayPassportQuantity <= 0) {
+            throw new TicketSoldOutException("Sold out");
+        }
+        if (handedMoney < TWO_DAY_PRICE) {
+            throw new TicketShortMoneyException("Short of money. Required " + TWO_DAY_PRICE + ", but handed " + handedMoney);
+        }
+        --twoDayPassportQuantity;
+        if (salesProceeds != null) {
+            salesProceeds = salesProceeds + TWO_DAY_PRICE;
+        } else {
+            salesProceeds = TWO_DAY_PRICE;
+        }
+        return handedMoney - TWO_DAY_PRICE;
     }
 
     public static class TicketSoldOutException extends RuntimeException {
@@ -91,8 +115,12 @@ public class TicketBooth {
     // ===================================================================================
     //                                                                            Accessor
     //                                                                            ========
-    public int getQuantity() {
-        return quantity;
+    public int getOneDayPassportQuantity() {
+        return oneDayPassportQuantity;
+    }
+
+    public int getTwoDayPassportQuantity() {
+        return twoDayPassportQuantity;
     }
 
     public Integer getSalesProceeds() {
