@@ -15,6 +15,7 @@
  */
 package org.docksidestage.bizfw.basic.buyticket;
 
+// TODO kohama authorいれておいてください by jflute (2026/11/06)
 /**
  * @author jflute
  */
@@ -25,11 +26,15 @@ public class TicketBooth {
     //                                                                          ==========
     private static final int MAX_QUANTITY = 10;
     private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
-    private static final int TWO_DAY_PRICE = 13200;
+    private static final int TWO_DAY_PRICE = 13200; // $Geminiさんが調べてくれた
+    // $年パスなくなった
 
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
+    // #1on1: いいね、在庫を分けました！ (2026/11/06)
+    // $迷いました！
+    // 迷うが正解。紙のイメージトレーニング。
     private int oneDayPassportQuantity = MAX_QUANTITY;
     private int twoDayPassportQuantity = MAX_QUANTITY;
     private Integer salesProceeds; // null allowed: until first purchase
@@ -58,10 +63,14 @@ public class TicketBooth {
      * @throws TicketShortMoneyException When the specified money is short for purchase.
      */
     public void buyOneDayPassport(Integer handedMoney) {
+        // TODO kohama 修行++: 最終的に、QuantityのoneDayの登場が1回になるようにしてみましょう by jflute (2026/11/06)
+        // $イメージできてるかも
         Integer change = buyPassport(handedMoney, ONE_DAY_PRICE, oneDayPassportQuantity);
         --oneDayPassportQuantity;
     }
 
+    // #1on1: JavaDocコメント、twoDay入れてくれてGood (2026/11/06)
+    // TODO kohama JavaDoc, @returnを入れておきましょう (日本語でOK) by jflute (2026/11/06)
     /**
      * Buy two-day passport, method for park guest.
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
@@ -69,10 +78,16 @@ public class TicketBooth {
      * @throws TicketShortMoneyException When the specified money is short for purchase.
      */
     public Integer buyTwoDayPassport(Integer handedMoney) {
+        // TODO kohama 凡ミス, oneDay使ってる by jflute (2026/11/06)
+        // #1on1: そもそもコピペを発生させない仕組みづくりは努力するとして... (2026/11/06)
+        // 一方で、ぼくらはコピペが０になるわけではない。ので、コピペを正確にするスキルもあった方が良い。
+        // 指差し確認が基本。エディターのテキスト操作を使うなど。新規ファイルで作業するなど。
         if (oneDayPassportQuantity <= 0) {
             throw new TicketSoldOutException("Sold out");
         }
         if (handedMoney < TWO_DAY_PRICE) {
+            // #1on1: エラーメッセージがりっちでわかりやすくなってる (2026/11/06)
+            // handedMoney をログに残しているのが素晴らしい。
             throw new TicketShortMoneyException("Short of money. Required " + TWO_DAY_PRICE + ", but handed " + handedMoney);
         }
         --twoDayPassportQuantity;
@@ -84,6 +99,9 @@ public class TicketBooth {
         return handedMoney - TWO_DAY_PRICE;
     }
 
+    // TODO kohama アドバンス: publicのbuyとprivateのbuyを区別するテクニック by jflute (2026/11/06)
+    // メソッド一覧とかで紛れたり、会話上「buyメソッド」でどっち？ってなりやすいので...
+    // e.g. doBuyPassport(), internalBuyPassport()
     private Integer buyPassport(Integer handedMoney, Integer price, Integer quantity) {
         if (quantity <= 0) {
             throw new TicketSoldOutException("Sold out");
@@ -120,6 +138,10 @@ public class TicketBooth {
     // ===================================================================================
     //                                                                            Accessor
     //                                                                            ========
+    // #1on1: いいね、元々が getQuantity() というシンプルなメソッド名だったけど、変更してわかりやすい (2026/11/06) 
+    // OneDayのみ時代から、One/TwoDay時代に変わったので、getQuantity()という名前が曖昧になる。
+    // OneDayのみ時代: OneDayの在庫なのか？トータル在庫なのか？が同じだった時代
+    // (概念の分離をできること自体が大事)
     public int getOneDayPassportQuantity() {
         return oneDayPassportQuantity;
     }

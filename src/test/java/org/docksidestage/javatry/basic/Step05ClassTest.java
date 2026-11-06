@@ -102,6 +102,15 @@ public class Step05ClassTest extends PlainTestCase {
         log(sea); // should be same as one-day price, visual check here
     }
 
+    // #1on1: 二つの特徴的なバグ (2026/11/06)
+    // o お金不足でもチケットが減る問題: 複数行の流れの間違い
+    //  i 比較的見つけづらい、業務の流れを理解しようとしないといけない
+    //  i 流れの間違いというのは意識して見つけていくくらいの感覚
+    //  i 実業務だと構造的にもっと複雑で流れがわかりにくいケースもよくある
+    //
+    // o 受け取ったお金の分だけ売上が増えていく問題: 単行のロジックの間違い
+    //  i まあまあ見つけやすい 
+
     /**
      * Make method for buying two-day passport (price is 13200). (which can return change as method return value)
      * (TwoDayPassport (金額は13200) も買うメソッドを作りましょう (戻り値でお釣りをちゃんと返すように))
