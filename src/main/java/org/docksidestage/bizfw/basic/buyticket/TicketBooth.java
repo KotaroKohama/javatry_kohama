@@ -42,7 +42,7 @@ public class TicketBooth {
     // $迷いました！
     // 迷うが正解。紙のイメージトレーニング。
     private final Map<TicketType, Integer> passportQuantity = new HashMap<TicketType, Integer>();
-    private Integer salesProceeds; // null allowed: until first purchase
+    private Integer salesProceeds;
 
     // ===================================================================================
     //                                                                         Constructor
@@ -50,6 +50,7 @@ public class TicketBooth {
     public TicketBooth() {
         passportQuantity.put(TicketType.ONE_DAY, MAX_QUANTITY);
         passportQuantity.put(TicketType.TWO_DAY, MAX_QUANTITY);
+        salesProceeds = 0;
     }
 
     // ===================================================================================
@@ -70,9 +71,9 @@ public class TicketBooth {
      * @throws TicketShortMoneyException When the specified money is short for purchase.
      */
     public void buyOneDayPassport(Integer handedMoney) {
-        // TODO kohama 修行++: 最終的に、QuantityのoneDayの登場が1回になるようにしてみましょう by jflute (2026/11/06)
+        // TODO done kohama 修行++: 最終的に、QuantityのoneDayの登場が1回になるようにしてみましょう by jflute (2026/11/06)
         // $イメージできてるかも
-        Integer change = doBuyPassport(handedMoney, TicketType.ONE_DAY);
+        doBuyPassport(handedMoney, TicketType.ONE_DAY);
     }
 
     // #1on1: JavaDocコメント、twoDay入れてくれてGood (2026/11/06)
@@ -101,11 +102,7 @@ public class TicketBooth {
         if (handedMoney < price) {
             throw new TicketShortMoneyException("Short of money. Required " + price + ", but handed " + handedMoney);
         }
-        if (salesProceeds != null) {
-            salesProceeds = salesProceeds + price;
-        } else {
-            salesProceeds = price;
-        }
+        salesProceeds = salesProceeds + price;
         passportQuantity.put(ticketType, quantity - 1);
         Integer change = handedMoney - price;
         return change;
