@@ -17,6 +17,7 @@ package org.docksidestage.bizfw.basic.buyticket;
 
 /**
  * @author jflute
+ * @author kohama
  */
 public class Ticket {
 
@@ -24,23 +25,24 @@ public class Ticket {
     //                                                                           Attribute
     //                                                                           =========
     private final int displayPrice; // written on ticket, park guest can watch this
-    private boolean alreadyIn; // true means this ticket is unavailable
+    private int remainingParkEntries;
 
     // ===================================================================================
     //                                                                         Constructor
     //                                                                         ===========
-    public Ticket(int displayPrice) {
+    public Ticket(int displayPrice, int remainingParkEntries) {
         this.displayPrice = displayPrice;
+        this.remainingParkEntries = remainingParkEntries;
     }
 
     // ===================================================================================
     //                                                                             In Park
     //                                                                             =======
     public void doInPark() {
-        if (alreadyIn) {
+        if (remainingParkEntries <= 0) {
             throw new IllegalStateException("Already in park by this ticket: displayedPrice=" + displayPrice);
         }
-        alreadyIn = true;
+        remainingParkEntries -= 1;
     }
 
     // ===================================================================================
@@ -50,7 +52,10 @@ public class Ticket {
         return displayPrice;
     }
 
-    public boolean isAlreadyIn() {
-        return alreadyIn;
+    public int getRemainingParkEntries() {
+        return remainingParkEntries;
+    }
+    public boolean hasRemainingEntries() {
+        return (remainingParkEntries > 0);
     }
 }

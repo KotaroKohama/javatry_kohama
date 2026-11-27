@@ -69,11 +69,13 @@ public class TicketBooth {
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
      * @throws TicketSoldOutException When ticket in booth is sold out.
      * @throws TicketShortMoneyException When the specified money is short for purchase.
+     * @return チケット (Ticketクラス）
      */
-    public void buyOneDayPassport(Integer handedMoney) {
+    public Ticket buyOneDayPassport(Integer handedMoney) {
         // TODO done kohama 修行++: 最終的に、QuantityのoneDayの登場が1回になるようにしてみましょう by jflute (2026/11/06)
         // $イメージできてるかも
         doBuyPassport(handedMoney, TicketType.ONE_DAY);
+        return new Ticket(ONE_DAY_PRICE, 1);
     }
 
     // #1on1: JavaDocコメント、twoDay入れてくれてGood (2026/11/06)
@@ -83,11 +85,12 @@ public class TicketBooth {
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
      * @throws TicketSoldOutException When ticket in booth is sold out.
      * @throws TicketShortMoneyException When the specified money is short for purchase.
-     * @return お釣り
+     * @return チケット購入結果（Ticketオブジェクト、お釣り）
      */
-    public Integer buyTwoDayPassport(Integer handedMoney) {
+    public TicketBuyResult buyTwoDayPassport(Integer handedMoney) {
         Integer change = doBuyPassport(handedMoney, TicketType.TWO_DAY);
-        return change;
+        Ticket ticket = new Ticket(TWO_DAY_PRICE, 2);
+        return new TicketBuyResult(ticket, change);
     }
 
     // TODO done kohama アドバンス: publicのbuyとprivateのbuyを区別するテクニック by jflute (2026/11/06)
