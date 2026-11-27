@@ -23,6 +23,8 @@ public class TicketBuyResult {
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
+    // TODO kohama 可読性のためにもfinalをつけておきましょう by jflute (2026/11/27)
+    // TODO kohama コメントがコピーされとる by jflute (2026/11/27)
     private Ticket ticket; // written on ticket, park guest can watch this
     private Integer change; // true means this ticket is unavailable
 

@@ -18,8 +18,7 @@ package org.docksidestage.bizfw.basic.buyticket;
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO kohama authorいれておいてください by jflute (2026/11/06)
-
+// done kohama authorいれておいてください by jflute (2026/11/06)
 /**
  * @author jflute
  * @author kohama
@@ -100,7 +99,7 @@ public class TicketBooth {
      * @return チケット (Ticketクラス）
      */
     public Ticket buyOneDayPassport(Integer handedMoney) {
-        // TODO done kohama 修行++: 最終的に、QuantityのoneDayの登場が1回になるようにしてみましょう by jflute (2026/11/06)
+        // done kohama 修行++: 最終的に、QuantityのoneDayの登場が1回になるようにしてみましょう by jflute (2026/11/06)
         // $イメージできてるかも
         doBuyPassport(handedMoney, TicketType.ONE_DAY);
         return new Ticket(ONE_DAY_PRICE, 1);

@@ -24,6 +24,13 @@ public class Ticket {
     // ===================================================================================
     //                                                                           Attribute
     //                                                                           =========
+    // #1on1: いいね、remainingという言葉がわかりやすい (2026/11/27)
+    // 残り日数なのか、入った日数なのかの区別が必要だが、しっかりできている。
+    // Entries で入園回数というint概念を示している。
+    // Days で日数ってint概念を示すのが一般的なので、そのルールでいうと悪くない。
+    // Times もあるか。
+    // $remainingParkEntryDaysだったら、誤解は少ないかも!?
+    // yes
     private final int displayPrice; // written on ticket, park guest can watch this
     private int remainingParkEntries;
 
@@ -48,6 +55,13 @@ public class Ticket {
     // ===================================================================================
     //                                                                            Accessor
     //                                                                            ========
+    // #1on1: isAlreadyIn()を1回以上のニュアンスで見てるのか、使い切りで見てるのか？ (2026/11/27)
+    // 新機能追加したときに、既存のプログラムの概念が破綻することがよくある。
+    // 新機能追加だからといって油断しない。
+    //public boolean isAlreadyIn() {
+    //    return 
+    //}
+
     public int getDisplayPrice() {
         return displayPrice;
     }
@@ -55,6 +69,7 @@ public class Ticket {
     public int getRemainingParkEntries() {
         return remainingParkEntries;
     }
+
     public boolean hasRemainingEntries() {
         return (remainingParkEntries > 0);
     }

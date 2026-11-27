@@ -17,7 +17,6 @@ package org.docksidestage.javatry.basic;
 
 import org.docksidestage.bizfw.basic.buyticket.Ticket;
 import org.docksidestage.bizfw.basic.buyticket.TicketBooth;
-import org.docksidestage.bizfw.basic.buyticket.TicketBuyResult;
 import org.docksidestage.bizfw.basic.buyticket.TicketBooth.TicketShortMoneyException;
 import org.docksidestage.unit.PlainTestCase;
 
@@ -118,13 +117,13 @@ public class Step05ClassTest extends PlainTestCase {
      * (TwoDayPassport (金額は13200) も買うメソッドを作りましょう (戻り値でお釣りをちゃんと返すように))
      */
     public void test_class_letsFix_makeMethod_twoday() {
-//        TicketBooth booth = new TicketBooth();
-//        int money = 14000;
-//        int change = booth.buyTwoDayPassport(money);
-//        Integer sea = booth.getSalesProceeds() + change;
-//        log(sea); // should be same as money
-//
-//        log(booth.getTwoDayPassportQuantity());
+        //        TicketBooth booth = new TicketBooth();
+        //        int money = 14000;
+        //        int change = booth.buyTwoDayPassport(money);
+        //        Integer sea = booth.getSalesProceeds() + change;
+        //        log(sea); // should be same as money
+        //
+        //        log(booth.getTwoDayPassportQuantity());
     }
 
     /**
@@ -158,12 +157,12 @@ public class Step05ClassTest extends PlainTestCase {
      * (TwoDayPassportもチケットをもらえませんでした。チケットとお釣りを戻すクラスを作って戻すようにしましょう)
      */
     public void test_class_moreFix_return_whole() {
-//        TicketBooth booth = new TicketBooth();
-//        int handedMoney = 20000;
-//        TicketBuyResult buyResult = booth.buyTwoDayPassport(handedMoney);
-//        Ticket twoDayPassport = buyResult.getTicket();
-//        int change = buyResult.getChange();
-//        log(twoDayPassport.getDisplayPrice() + change); // should be same as money
+        //        TicketBooth booth = new TicketBooth();
+        //        int handedMoney = 20000;
+        //        TicketBuyResult buyResult = booth.buyTwoDayPassport(handedMoney);
+        //        Ticket twoDayPassport = buyResult.getTicket();
+        //        int change = buyResult.getChange();
+        //        log(twoDayPassport.getDisplayPrice() + change); // should be same as money
     }
 
     /**
@@ -171,9 +170,10 @@ public class Step05ClassTest extends PlainTestCase {
      * (TwoDayPassportなのに一回しか利用できません。複数日数に対応できるようにTicketを修正しましょう)
      */
     public void test_class_moreFix_usePluralDays() {
-
+        // TODO kohama step6のコンパイルエラーは辻褄合うように直しておいてください by jflute (2026/11/27)
     }
 
+    // TODO jflute 次回1on1このへんから (2026/11/27)
     /**
      * Accurately determine whether type of bought ticket is two-day passport or not by if-statement. (fix Ticket classes if needed) <br>
      * (買ったチケットの種別がTwoDayPassportなのかどうかをif文で正確に判定してみましょう。(必要ならTicketクラスたちを修正))
