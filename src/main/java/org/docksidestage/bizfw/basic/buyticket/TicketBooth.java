@@ -33,7 +33,10 @@ public class TicketBooth {
     private static final int ONE_DAY_PRICE = 7400; // when 2019/06/15
     private static final int TWO_DAY_PRICE = 13200; // $Geminiさんが調べてくれた
     // $年パスなくなった
-    private enum TicketType { ONE_DAY, TWO_DAY }
+
+    private enum TicketType {
+        ONE_DAY, TWO_DAY
+    }
 
     // ===================================================================================
     //                                                                           Attribute
@@ -41,6 +44,29 @@ public class TicketBooth {
     // #1on1: いいね、在庫を分けました！ (2026/11/06)
     // $迷いました！
     // 迷うが正解。紙のイメージトレーニング。
+    // TODO kohama 名前、...Quantityだと単体の値に見えちゃうので... by jflute (2026/11/27)
+    // e.g. passportQuantities or passportQuantityMap
+    // #1on1: 変数名に型の情報をどの程度入れるか？ (2026/11/27)
+    // o 必ず入れる e.g. salesProceedsInt, intSalesProceeds
+    // o 絶対入れない e.g. passportQuantities
+    // $絶対入れないってほどではないけど、ここだとpassportQuantitiesかなぁ。
+    // これは 0/1 なのか？真ん中付近があるのか？
+    // booleanの変数名/メソッド名ってどうしている？
+    // $is, hasとか
+    // e.g.
+    //  boolean prepared; boolean isPrepared;
+    //  boolean deleted; boolean isDeleted;
+    // has, exists, needs... // 三単現の活用の動詞
+    // isShow... or shows... or show... (or isShown: 表示されてるかどうか？)
+    // or needsShowing... or canShow...
+    // may, can, should, must, ...
+    //
+    // booleanは、booleanっぽさを一生懸命表現しようとするのがわりと一般的。
+    // そういう意味では、型の匂わせは多くの人がやってることなのかな!?
+    //
+    // jfluteの場合、Collectionに関しては使い方をパット見で区別したいのでMapってよく使う。
+    // でもそれが一般的というわけではない。
+    //
     private final Map<TicketType, Integer> passportQuantity = new HashMap<TicketType, Integer>();
     private Integer salesProceeds;
 
@@ -48,6 +74,8 @@ public class TicketBooth {
     //                                                                         Constructor
     //                                                                         ===========
     public TicketBooth() {
+        // TODO kohama チケット種別が増えても追加修正しなくても済むようにしてみましょう by jflute (2026/11/27)
+        // (すべてのチケット種別が全部同じMAX_QUANTITYであることが前提)
         passportQuantity.put(TicketType.ONE_DAY, MAX_QUANTITY);
         passportQuantity.put(TicketType.TWO_DAY, MAX_QUANTITY);
         salesProceeds = 0;
@@ -71,13 +99,13 @@ public class TicketBooth {
      * @throws TicketShortMoneyException When the specified money is short for purchase.
      */
     public void buyOneDayPassport(Integer handedMoney) {
-        // TODO done kohama 修行++: 最終的に、QuantityのoneDayの登場が1回になるようにしてみましょう by jflute (2026/11/06)
+        // done kohama 修行++: 最終的に、QuantityのoneDayの登場が1回になるようにしてみましょう by jflute (2026/11/06)
         // $イメージできてるかも
         doBuyPassport(handedMoney, TicketType.ONE_DAY);
     }
 
     // #1on1: JavaDocコメント、twoDay入れてくれてGood (2026/11/06)
-    // TODO done kohama JavaDoc, @returnを入れておきましょう (日本語でOK) by jflute (2026/11/06)
+    // done kohama JavaDoc, @returnを入れておきましょう (日本語でOK) by jflute (2026/11/06)
     /**
      * Buy two-day passport, method for park guest.
      * @param handedMoney The money (amount) handed over from park guest. (NotNull, NotMinus)
@@ -90,10 +118,11 @@ public class TicketBooth {
         return change;
     }
 
-    // TODO done kohama アドバンス: publicのbuyとprivateのbuyを区別するテクニック by jflute (2026/11/06)
+    // done kohama アドバンス: publicのbuyとprivateのbuyを区別するテクニック by jflute (2026/11/06)
     // メソッド一覧とかで紛れたり、会話上「buyメソッド」でどっち？ってなりやすいので...
     // e.g. doBuyPassport(), internalBuyPassport()
     private Integer doBuyPassport(Integer handedMoney, TicketType ticketType) {
+        // #1on1: チケット種別が増えたときに頑張ってもらう (2026/11/27)
         Integer price = ticketType == TicketType.ONE_DAY ? ONE_DAY_PRICE : TWO_DAY_PRICE;
         Integer quantity = passportQuantity.get(ticketType);
         if (quantity <= 0) {
